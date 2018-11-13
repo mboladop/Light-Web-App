@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -11,11 +12,11 @@ class readings(Resource):
     def get(self):
         return {
             
-                'id': {'date': 10-11-2018,
+                'id1': {'datetime': 10-11-2018,
                 'counter': 197345367}
             ,
             
-                'id': {'date': 10-11-2018,
+                'id2': {'datetime': 10-11-2018,
                 'counter': 197345369}
         }
     
