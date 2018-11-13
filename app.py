@@ -1,16 +1,16 @@
 from flask import Flask, jsonify, request
-
-
+from datetime import datetime
+from werkzeug.routing import BaseConverter, ValidationError
 
 app = Flask(__name__)
 
 readings = [
     {
-        'date': 12.10.2018,
+        'date': 10-11-2018,
         'counter': 197345367
     },
     {
-        'date': 13.10.2018,
+        'date': 10-11-2018,
         'counter': 197345369
     }
 ]
