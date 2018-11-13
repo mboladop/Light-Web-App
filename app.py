@@ -7,8 +7,11 @@ app = Flask(__name__)
 api = Api(app)
 
 
+parser = reqparse.RequestParser()
+
 
 class readings(Resource):
+    # get method
     def get(self):
         return {
             
@@ -19,15 +22,30 @@ class readings(Resource):
                 'id2': {'datetime': 10-11-2018,
                 'counter': 197345369}
         }
-    
+    #post method
+    def post(self):
+        parser.add_argument('quote', type=str)
+        args = parser.parse_args()
 
+        return {
+            'status': True,
+            'quote': '{} added. Good'.format(args['quote'])
+        }
 
 api.add_resource(readings, '/')
 
 if __name__ == '__main__':
     app.run(debug=True)
 
+# parser = reqparse.RequestParser()
+# def post(self):
+#         parser.add_argument('quote', type=str)
+#         args = parser.parse_args()
 
+#         return {
+#             'status': True,
+#             'quote': '{} added. Good'.format(args['quote'])
+#         }
 
 # class Quotes(Resource):
 #     def get(self):
