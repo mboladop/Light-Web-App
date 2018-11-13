@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, abort
+from flask import Flask, jsonify, request
 
 
 
@@ -6,11 +6,11 @@ app = Flask(__name__)
 
 readings = [
     {
-        'date': 12-10-2018,
+        'date': 12.10.2018,
         'counter': 197345367
     },
     {
-        'date': 13-10-2018,
+        'date': 13.10.2018,
         'counter': 197345369
     }
 ]
@@ -21,3 +21,14 @@ def get_readings():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+@app.route('/readings', methods=['POST'])
+def create_reading():
+    if not request.json or not 'title' in request.json:
+        abort(400)
+    reading = {
+        'date': request.json['date'],
+        'counter': request.json.get('counter', ""),
+    }
+    readings.append(reading)
+    return jsonify({'reading': reading}), 201
