@@ -1,30 +1,52 @@
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 
-
 app = Flask(__name__)
 
 api = Api(app)
 
-class Quotes(Resource):
+
+
+class readings(Resource):
     def get(self):
         return {
-            'ataturk': {
-                'quote': ['Yurtta sulh, cihanda sulh.', 
-                    'Egemenlik verilmez, alınır.', 
-                    'Hayatta en hakiki mürşit ilimdir.']
-            },
-            'linus': {
-                'quote': ['Talk is cheap. Show me the code.']
-            }
-
+            
+                'id': {'date': 10-11-2018,
+                'counter': 197345367}
+            ,
+            
+                'id': {'date': 10-11-2018,
+                'counter': 197345369}
         }
+    
 
 
-api.add_resource(Quotes, '/')
+api.add_resource(readings, '/')
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+# class Quotes(Resource):
+#     def get(self):
+#         return {
+#             'ataturk': {
+#                 'quote': ['Yurtta sulh, cihanda sulh.', 
+#                     'Egemenlik verilmez, alınır.', 
+#                     'Hayatta en hakiki mürşit ilimdir.']
+#             },
+#             'linus': {
+#                 'quote': ['Talk is cheap. Show me the code.']
+#             }
+
+#         }
+
+
+# api.add_resource(Quotes, '/')
+
+# if __name__ == '__main__':
+#     app.run(debug=True)
 
 # readings = [
 #     {
