@@ -1,16 +1,72 @@
 from flask import Flask, jsonify, request
-from flask_restful import Resource, Api, reqparse
-from datetime import datetime
+from flask_pymongo import PyMongo
+from flask_restful import Resource, Api, reqparse 
+import datetime
+import dateutil.parser, datetime
+from bson.json_util import dumps
+import os
 
 app = Flask(__name__)
 
-api = Api(app)
 
+
+@app.route('/')
+@app.route('/index')
+def index():
+    return "Hello, World!"
+
+app.config['MONGO_DBNAME'] = os.environ.get("MONGODB_NAME")
+app.config['MONGO_URI'] = os.environ.get("MONGODB_URI")
+
+
+mongo = PyMongo(app)
+
+@app.route('/getreadings/<year>/<month>', methods=['GET'])
+def get_readings(year, month):
+    resultados = dumps(mongo.db.readings.aggregate([
+     {
+       "$project":
+         {
+           "counter": "$counter",
+           "date": "$date",
+           "year": { "$year": "$date" },
+           "month": { "$month": "$date" }
+           }
+     },
+     { "$match" : {  "year": int(year) , "month" : int(month)} }
+   ]
+     ))
+    return resultados
+
+# def get_readings_month():
+#     now = datetime.datetime.now()
+#     year = now.year
+#     month = now.month
+#     yesterday = now.day - 1
+#     dateStr = str(year) + "-" + str(month) + "-" + str(yesterday)
+#     date = dateutil.parser.parse(dateStr)
+#     resultados = dumps(mongo.db.readings.find({'date' : { '$gt' : date}},{'date':'1'}))
+#     return resultados
+
+@app.route('/addreadings', methods=['POST'])
+def add_readings():
+    content = request.values.get('counter')
+    reading = {
+        "date" : datetime.datetime.utcnow(),
+        "counter": content
+        }
+
+    insert_reading = mongo.db.readings.insert_one(reading)
+    return 'reading inserted'
+
+
+api = Api(app)
 
 parser = reqparse.RequestParser()
 
 
 class readings(Resource):
+
     # get method
     def get(self):
         return {
@@ -34,8 +90,11 @@ class readings(Resource):
 
 api.add_resource(readings, '/')
 
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+
 
 # parser = reqparse.RequestParser()
 # def post(self):
