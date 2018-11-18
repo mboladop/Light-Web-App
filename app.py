@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_pymongo import PyMongo
 from flask_restful import Resource, Api, reqparse 
 import datetime
+from flask_cors import cross_origin
 import dateutil.parser, datetime
 from bson.json_util import dumps
 import os
@@ -22,7 +23,8 @@ app.config['MONGO_URI'] = os.environ.get("MONGODB_URI")
 mongo = PyMongo(app)
 
 @app.route('/getreadings/<year>/<month>', methods=['GET'])
-def get_readings(year, month):
+@cross_origin()
+def get_readings(year, month)
     resultados = dumps(mongo.db.readings.aggregate([
      {
        "$project":
