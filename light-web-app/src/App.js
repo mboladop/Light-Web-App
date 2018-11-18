@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import Readings from './Readings.js';
+import Readings from './Readings';
 import './App.css';
 
 
@@ -11,7 +11,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      months: []
+      months: [],
+      cociente: 0.5,
     };
     
   }  
@@ -41,7 +42,7 @@ class App extends Component {
        
        <p>{
         this.state.months && this.state.months.map((item)=>{
-          return <Readings month={item.month} year={item.year}/>;
+          return <Readings cociente = {this.state.cociente} month={item.month} year={item.year}/>;
         })
       }</p>
        </card>
