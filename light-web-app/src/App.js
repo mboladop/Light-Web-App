@@ -1,11 +1,33 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import Demo from './Demo.js';
+import Readings from './Readings.js';
 import './App.css';
-const dummy = [{title:'titleXX', reading:223}, {title:'title2', reading:898}, {title:'title3', reading:600}];
-const months = [{month:11, year:2018},{month:10, year:2018}]
+
+
+
+
 class App extends Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      months: []
+    };
+    
+  }  
+  
+  componentDidMount(){
+    const d = new Date();
+    const n = d.getMonth()+1;
+    const y = d.getFullYear();
+    const prevArray = [{month:n,year:y}, {month:(n===1)?12:n-1, year:(n===1)? y-1:y}];
+    this.setState({
+      months: prevArray
+    });
+    
+  }
   render() {
+    
     return (
       <div className="App">
        
@@ -13,29 +35,19 @@ class App extends Component {
          <h1>Light Web App</h1>
        </container>
        <hr/>
-      {
-        // dummy.map((item)=>{
-        //   return <Demo title={item.title} reading={item.reading} />;
-        // })
-      }
-      {
-        months.map((item)=>{
-          return <Demo month={item.month} year={item.year} />;
-        })
-      }
-
+      
        <card>
        <h4>Mes en curso</h4>
-       <p>Reading:</p>
+       
+       <p>{
+        this.state.months && this.state.months.map((item)=>{
+          return <Readings month={item.month} year={item.year}/>;
+        })
+      }</p>
        </card>
 
        <hr/>
-       <card>
-       <h4>Mes anterior</h4>
-       <p>Reading:</p>
-       
-       </card>
-       <hr/>
+
        <card>
        <h4>Graphs y Consumo</h4>
        </card>
