@@ -24,7 +24,7 @@ mongo = PyMongo(app)
 
 @app.route('/getreadings/<year>/<month>', methods=['GET'])
 @cross_origin()
-def get_readings(year, month)
+def get_readings(year, month):
     resultados = dumps(mongo.db.readings.aggregate([
      {
        "$project":
